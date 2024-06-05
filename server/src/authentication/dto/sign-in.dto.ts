@@ -1,8 +1,8 @@
-import { IsAlpha, IsNotEmpty } from "class-validator"
+import { IsAlpha, IsEmail, IsNotEmpty } from "class-validator"
 
 export class SignInDto {
-    @IsAlpha()
-    username:string
+    @IsEmail()
+    email:string
 
     @IsNotEmpty()
     password:string

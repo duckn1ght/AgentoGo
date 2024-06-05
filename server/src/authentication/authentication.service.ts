@@ -1,24 +1,27 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { SignInDto } from './dto/sign-in.dto';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/users/client/entities/user.entity';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt'
 import { JwtService } from '@nestjs/jwt';
+import { Client } from 'src/users/client/entities/client.entity';
+import { CreateClientDto } from 'src/users/client/dto/create-client.dto';
+import { Address } from 'src/users/client/entities/address.entity';
+import { Organization } from 'src/users/client/entities/organization.entity';
 
 @Injectable()
 export class AuthenticationService {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    @InjectRepository(Client)
+    private readonly clientRepository: Repository<Client>,
+    private readonly entityManager: EntityManager,
     private jwtService: JwtService,
   ){}
 
   async signIn(signInDto: SignInDto) {
-    const user = await this.userRepository.findOne({
+    const user = await this.clientRepository.findOne({
       where:{
-        username: signInDto.username
+        email: signInDto.email
       }
     })
 
@@ -37,15 +40,15 @@ export class AuthenticationService {
 
     return JSON.stringify(token);
   }
-  async signUp(signUp: CreateUserDto) {
-    const userExist = await this.userRepository.count({
+  async signUp(signUp: CreateClientDto) {
+    const clientExist = await this.clientRepository.count({
       where:{
-        username: signUp.username
+        email: signUp.email
       }
     })
-    if(userExist) {
+    if(clientExist) {
       throw new HttpException(
-        'Пользователь с таким логином уже существует',
+        'Пользователь с таким email уже существует',
         HttpStatus.CONFLICT
       )
     }
@@ -53,8 +56,13 @@ export class AuthenticationService {
     const salt = await bcrypt.genSalt()
     const hash = await bcrypt.hash(signUp.password,salt)
 
-    const user = new User({...signUp, password:hash})
-    await this.userRepository.save(user)
+    const address = new Address(signUp.address)
+
+    const organization = new Organization(signUp.organization)
+
+    const client = new Client({...signUp, password:hash, role: "руководитель", address: address, organization: organization})
+
+    await this.entityManager.save(client)
     return JSON.stringify("Пользователь зарегистрирован");
   }
 

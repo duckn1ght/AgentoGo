@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { SignInDto } from './dto/sign-in.dto';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/constants';
+import { CreateClientDto } from 'src/users/client/dto/create-client.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -17,8 +17,8 @@ export class AuthenticationController {
   }
   
   @Public()
-  @Post('signup')
-  signUp(@Body() createUserDto: CreateUserDto) {
-    return this.authenticationService.signUp(createUserDto);
+  @Post('register/client')
+  signUp(@Body() createClientDto: CreateClientDto) {
+    return this.authenticationService.signUp(createClientDto);
   }
 }

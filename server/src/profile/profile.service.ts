@@ -1,15 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/users/client/entities/user.entity';
 import { Repository } from 'typeorm';
 import { Profile } from './models/profile.model';
+import { Client } from 'src/users/client/entities/client.entity';
 
 @Injectable()
 export class ProfileService {
  constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    @InjectRepository(Client)
+    private readonly userRepository: Repository<Client>,
  ){}
 
  async getProfile(tokenData: TokenData){

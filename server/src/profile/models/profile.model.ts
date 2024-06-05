@@ -1,9 +1,16 @@
+import { Address } from "src/users/client/entities/address.entity"
+import { Organization } from "src/users/client/entities/organization.entity"
+import { Requisities } from "src/users/client/entities/requisites.entity"
+import { ROLE_TYPE } from "src/users/client/types/role"
 
 export class Profile{
-    firstName:string = ""
-    lastName:string = ""
+    fullName:string = ""
     email:string = ""
-    username:string = ""
+    address: Address | null = null
+    phoneNumber: string = ""
+    organization: Organization | null = null;
+    requisities: Requisities | null
+    role: ROLE_TYPE = "руководитель"
 
     constructor(item:any){
         const keys = Object.keys(this)
