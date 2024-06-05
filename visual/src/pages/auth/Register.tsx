@@ -4,15 +4,27 @@ import { Controller, useForm } from "react-hook-form"
 import { TextField } from "@mui/material"
 import { requiredEmailValidationRule, requiredValidateMinLength } from "../../components/input-validate"
 import { Button } from "../../shared/ui/Button"
-import { apiService } from "../../services/api/ApiService"
 import { useNavigate } from "@tanstack/react-router"
 
+type ORGANIZATION_TYPE = "ТОО" | "ИП"
+
+interface AddressDto{
+    region:string,
+    city:string
+}
+
+interface OrganizationDto{
+    orgType: ORGANIZATION_TYPE,
+    identityNumber : string
+}
+
 interface FormType{
-    username:string,
-    password:string,
-    lastName:string,
-    email:string,
-    firstName:string
+    email: string,
+    password: string,
+    address: AddressDto
+    fullName: string,
+    phoneNumber: string,
+    organization: OrganizationDto
 }
 
 export const Register:FC = function Register(){
@@ -25,68 +37,18 @@ export const Register:FC = function Register(){
         formState:{isValid}
     } = useForm<FormType>({
         defaultValues:{
-            username:"",
-            password:"",
-            lastName:"",
-            email:"",
-            firstName:""
+            email: "",
+            password: "",
+            address: {},
+            fullName: "",
+            phoneNumber: "",
+            organization: {}
         },
         mode:"onChange"
     })
-    return <AuthForm onSubmit={handleSubmit(async (form) => {
-        const response = await apiService.post<string>({
-            url:"/auth/register",
-            dto:form
-        })
-        if(response.data){
-            navigate({to: "/login"})
-        }
-    })}>
-        <Controller 
-            name="username"
-            control={control}
-            rules={requiredValidateMinLength(6)}
-            render={( {field, fieldState: {error} }) =>(
-                <TextField 
-                    {...field}
-                    error={Boolean(error?.message)}
-                    helperText= {error?.message}
-                    label={"Логин"}
-                    fullWidth={true}
-                    variant="standard"
-                />
-            )}
-        />
-        <Controller 
-            name="firstName"
-            control={control}
-            rules={requiredValidateMinLength(2)}
-            render={( {field, fieldState: {error} }) =>(
-                <TextField 
-                    {...field}
-                    error={Boolean(error?.message)}
-                    helperText= {error?.message}
-                    label={"Имя"}
-                    fullWidth={true}
-                    variant="standard"
-                />
-            )}
-        />
-        <Controller 
-            name="lastName"
-            control={control}
-            rules={requiredValidateMinLength(2)}
-            render={( {field, fieldState: {error} }) =>(
-                <TextField 
-                    {...field}
-                    error={Boolean(error?.message)}
-                    helperText= {error?.message}
-                    label={"Фамилия"}
-                    fullWidth={true}
-                    variant="standard"
-                />
-            )}
-        />
+    return <AuthForm onSubmit={(form) => {
+        console.log(form)
+    }}>
         <Controller 
             name="email"
             control={control}
@@ -96,7 +58,7 @@ export const Register:FC = function Register(){
                     {...field}
                     error={Boolean(error?.message)}
                     helperText= {error?.message}
-                    label={"Email"}
+                    label={"Электронная почта"}
                     fullWidth={true}
                     variant="standard"
                 />
@@ -105,19 +67,65 @@ export const Register:FC = function Register(){
         <Controller 
             name="password"
             control={control}
-            rules={requiredValidateMinLength(7)}
+            rules={requiredValidateMinLength(6)}
             render={( {field, fieldState: {error} }) =>(
                 <TextField 
                     {...field}
-                    type="password"
                     error={Boolean(error?.message)}
                     helperText= {error?.message}
                     label={"Пароль"}
                     fullWidth={true}
                     variant="standard"
+                    type="password"
                 />
             )}
         />
+        <Controller 
+            name="address.region"
+            control={control}
+            rules={requiredValidateMinLength(2)}
+            render={( {field, fieldState: {error} }) =>(
+                <TextField 
+                    {...field}
+                    error={Boolean(error?.message)}
+                    helperText= {error?.message}
+                    label={"Регион"}
+                    fullWidth={true}
+                    variant="standard"
+                />
+            )}
+        />
+        <Controller 
+            name="address.city"
+            control={control}
+            rules={requiredValidateMinLength(2)}
+            render={( {field, fieldState: {error} }) =>(
+                <TextField 
+                    {...field}
+                    error={Boolean(error?.message)}
+                    helperText= {error?.message}
+                    label={"Город"}
+                    fullWidth={true}
+                    variant="standard"
+                />
+            )}
+        />
+        <Controller 
+            name="phoneNumber"
+            control={control}
+            rules={requiredValidateMinLength(2)}
+            render={( {field, fieldState: {error} }) =>(
+                <TextField 
+                    {...field}
+                    error={Boolean(error?.message)}
+                    helperText= {error?.message}
+                    label={"Город"}
+                    fullWidth={true}
+                    variant="standard"
+                />
+            )}
+        />
+        
         <Button disabled={!isValid} type="submit">
             {"Зарегистрироваться"}
         </Button>

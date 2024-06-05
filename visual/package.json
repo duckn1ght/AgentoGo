@@ -21,7 +21,8 @@
     "effector-react": "^23.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.51.0"
+    "react-hook-form": "^7.51.0",
+    "use-mask-input": "^3.3.7"
   },
   "devDependencies": {
     "@tanstack/react-router-devtools": "^0.0.1-alpha.1",

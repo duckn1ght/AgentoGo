@@ -3,13 +3,13 @@ import { AuthForm } from "./ui/AuthForm"
 import { Controller, useForm } from "react-hook-form"
 import { TextField } from "@mui/material"
 import { Button } from "../../shared/ui/Button"
-import { requiredValidateMinLength } from "../../components/input-validate"
+import { requiredEmailValidationRule, requiredValidateMinLength } from "../../components/input-validate"
 import { useNavigate } from "@tanstack/react-router"
 import { apiService } from "../../services/api/ApiService"
 import { useAuth } from "../../features/auth"
 
 interface FormType{
-    username:string,
+    email:string,
     password:string
 }
 
@@ -23,7 +23,7 @@ export const Login:FC = function Login(){
         formState:{isValid}
     } = useForm<FormType>({
         defaultValues:{
-            username:"",
+            email:"",
             password:""
         },
         mode:"onChange"
@@ -40,15 +40,15 @@ export const Login:FC = function Login(){
         }
     })}>
         <Controller 
-            name="username"
+            name="email"
             control={control}
-            rules={requiredValidateMinLength(6)}
+            rules={requiredEmailValidationRule}
             render={( {field, fieldState: {error} }) =>(
                 <TextField 
                     {...field}
                     error={Boolean(error?.message)}
                     helperText= {error?.message}
-                    label={"Логин"}
+                    label={"Электронная почта"}
                     fullWidth={true}
                     variant="standard"
                 />
