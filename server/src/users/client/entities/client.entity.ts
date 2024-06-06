@@ -29,7 +29,7 @@ export class Client extends AbstractEntity<Client> {
     @JoinColumn()
     organization: Organization
 
-    @OneToOne(() => Requisities, {cascade:true,nullable:true})
+    @OneToOne(() => Requisities, {cascade:true, nullable:true})
     @JoinColumn()
     requisities: Requisities
 

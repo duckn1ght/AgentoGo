@@ -15,7 +15,7 @@ export class ProfileController {
     return this.profileService.getProfile(req.user)
   }
 
-  @Patch("/requisities")
+  @Post("/requisities")
   addRequisities(@Request() req:AuthRequest, @Body()createRequisitiesDto:CreateRequisitiesDto){
     return this.profileService.addRequisities(req.user, createRequisitiesDto)
   }

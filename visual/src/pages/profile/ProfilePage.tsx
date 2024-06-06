@@ -49,8 +49,8 @@ export const ProfilePage: FC<Props> = function ProfilePage(props) {
     </Card>
     <Card className='border border-amber-400 w-full flex flex-col gap-3'>
         <div className="flex justify-between">
-            <Typography weight={700} size={20}>{"Реквизиты счета"}</Typography>
-            <EditIcon sx={ICON_STYLE}/>
+            {<Typography weight={700} size={20}>{"Реквизиты счета"}</Typography>}
+            {(Boolean(user?.requisities)) ? <EditIcon sx={ICON_STYLE}/> : (<></>)} 
         </div>
         { (user?.requisities) ? (
             <>
