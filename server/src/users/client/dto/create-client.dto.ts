@@ -1,7 +1,6 @@
 import { IsAlpha, IsEmail, IsMobilePhone, IsNotEmpty, IsPhoneNumber } from "class-validator";
 import { Address } from "../entities/address.entity";
 import { Organization } from "../entities/organization.entity";
-import { locales } from '../../../../node_modules/validator/es/lib/isPostalCode';
 
 export class CreateClientDto {
     @IsEmail()

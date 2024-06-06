@@ -1,5 +1,6 @@
-import { Column, Entity} from "typeorm";
+import { Column, Entity, OneToOne} from "typeorm";
 import { AbstractEntity } from "src/abstractions/abstract.entity";
+import { Client } from "./client.entity";
 
 @Entity()
 export class Requisities extends AbstractEntity<Requisities> {
@@ -14,5 +15,5 @@ export class Requisities extends AbstractEntity<Requisities> {
     bankCode: string | null
 
     @Column({name: "ben_code"})
-    benCode: string | null    
+    benCode: string | null
 }

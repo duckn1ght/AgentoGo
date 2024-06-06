@@ -45,7 +45,6 @@ class ApiService{
         .then(this._status)
         .then(async (response) =>{
             const data = await response.json()
-
             return {
                 status: response.status,
                 data

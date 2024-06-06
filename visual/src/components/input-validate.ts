@@ -21,7 +21,7 @@ export const requiredEmailValidationRule ={
 export const requiredPhoneValidationRule = {
     ...requiredField,
     validate: (value:string) => {
-        const phoneRegex = /^(\+7|8)?9\d{9}$/;
+        const phoneRegex = /^\+7\s?\(?\d{3}\)?\s?\d{3}-?\d{2}-?\d{2}$/;
         return phoneRegex.test(value) || "Некорректный номер телефона"
     } 
 }

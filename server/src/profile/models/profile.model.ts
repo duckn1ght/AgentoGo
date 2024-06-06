@@ -9,7 +9,7 @@ export class Profile{
     address: Address | null = null
     phoneNumber: string = ""
     organization: Organization | null = null;
-    requisities: Requisities | null
+    requisities: Requisities | null = null
     role: ROLE_TYPE = "руководитель"
 
     constructor(item:any){

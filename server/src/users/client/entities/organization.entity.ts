@@ -1,5 +1,6 @@
 import { AbstractEntity } from "src/abstractions/abstract.entity";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Client } from "./client.entity";
 
 export type ORGANIZATION_TYPE = "ТОО" | "ИП"
 

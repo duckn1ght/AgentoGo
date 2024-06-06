@@ -3,10 +3,11 @@ import { ProfileService } from './profile.service';
 import { ProfileController } from './profile.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Client } from 'src/users/client/entities/client.entity';
+import { Requisities } from 'src/users/client/entities/requisites.entity';
 
 
 @Module({
-  imports:[TypeOrmModule.forFeature([Client ])],
+  imports:[TypeOrmModule.forFeature([Client, Requisities ])],
   controllers: [ProfileController],
   providers: [ProfileService]
 })

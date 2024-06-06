@@ -7,11 +7,12 @@ import { AUTH_PATH } from '../routes/__root';
 import HomeIcon from '@mui/icons-material/Home';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { COLORS_TEXT } from '../shared/ui/colors';
+import { tokenService } from '../services/storage/Factory';
+import { apiService } from '../services/api/ApiService';
 
 export const HeaderMenu: FC = function HeaderMenu() {
     const {isAuthenticated, user} = useAuth()
     const routes: RouterState = useRouterState()
-
   return <Header>
     {!isAuthenticated && AUTH_PATH.includes(routes.location.pathname) ? (
         <div className="flex justify-center gap-12">
@@ -25,17 +26,21 @@ export const HeaderMenu: FC = function HeaderMenu() {
         </Link>
         <div>
           <Typography color={COLORS_TEXT.alternative} weight={600}>
-            {`${user?.firstName} ${user?.lastName}`}
+            {`${user?.fullName}`}
           </Typography>
           <Typography 
             color={COLORS_TEXT.alternative} 
             weight={600}
             align='center'
           >
-            {`@${user?.username}`}
+            {`${user?.email}`}
           </Typography>
         </div>
-        <ExitToAppIcon sx={{color: 'white'}} />
+          <ExitToAppIcon sx={{color: 'white'}} onClick={() => {
+            tokenService.deleteValue()
+            apiService.deleteBearerToken()
+            location.reload()
+          }}/>
       </div>
     )}
   </Header>

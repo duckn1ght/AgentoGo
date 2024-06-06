@@ -1,15 +1,16 @@
 import { AbstractEntity } from "src/abstractions/abstract.entity";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToOne } from "typeorm";
+import { Client } from "./client.entity";
 
 @Entity()
 export class Address extends AbstractEntity<Address> {
 
     @Column()
-    reigon:string
+    region:string
 
     @Column()
     city:string
 
-    @Column()
-    street: string | null
+    @Column({nullable:true})
+    street: string
 }

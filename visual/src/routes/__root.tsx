@@ -6,6 +6,7 @@ import { HeaderMenu } from "../components/HeaderMenu";
 import { tokenService } from "../services/storage/Factory";
 import { useAuth } from "../features/auth";
 import { InitPage } from "../pages/init/InitPage";
+import { FooterMenu } from "../components/FooterMenu";
 
 export const AUTH_PATH = ["/login","/register"]
 
@@ -24,7 +25,8 @@ export const Route = createRootRouteWithContext<RootRouteContext>()({
             <div className="p-2">
                 <Outlet />
             </div>
-            <TanStackRouterDevtools/>
+            <FooterMenu/>
+            {/* <TanStackRouterDevtools/> */}
         </div>
         </>
         )

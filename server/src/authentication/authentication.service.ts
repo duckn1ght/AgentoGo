@@ -8,6 +8,7 @@ import { Client } from 'src/users/client/entities/client.entity';
 import { CreateClientDto } from 'src/users/client/dto/create-client.dto';
 import { Address } from 'src/users/client/entities/address.entity';
 import { Organization } from 'src/users/client/entities/organization.entity';
+import { Requisities } from 'src/users/client/entities/requisites.entity';
 
 @Injectable()
 export class AuthenticationService {
@@ -59,8 +60,9 @@ export class AuthenticationService {
     const address = new Address(signUp.address)
 
     const organization = new Organization(signUp.organization)
+    const requisities = new Requisities(null)
 
-    const client = new Client({...signUp, password:hash, role: "руководитель", address: address, organization: organization})
+    const client = new Client({...signUp, password:hash, role: "руководитель", address: address, organization: organization, requisities: requisities})
 
     await this.entityManager.save(client)
     return JSON.stringify("Пользователь зарегистрирован");

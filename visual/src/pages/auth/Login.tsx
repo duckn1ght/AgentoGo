@@ -32,8 +32,13 @@ export const Login:FC = function Login(){
         const response = await apiService.post<string>({
             url:"/auth/login",
             dto:form
+        }).catch((response) =>{
+            if (response.status === 401){
+                throw alert("Неверный логин или пароль")
+            }
+            throw alert("Такого пользователя не существует")
         })
-
+        
         if(response.data){
             setToken(response.data)
             navigate({to:"/"})
