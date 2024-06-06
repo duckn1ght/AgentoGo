@@ -60,9 +60,8 @@ export class AuthenticationService {
     const address = new Address(signUp.address)
 
     const organization = new Organization(signUp.organization)
-    const requisities = new Requisities(null)
 
-    const client = new Client({...signUp, password:hash, role: "руководитель", address: address, organization: organization, requisities: requisities})
+    const client = new Client({...signUp, password:hash, role: "руководитель", address: address, organization: organization, requisities: null})
 
     await this.entityManager.save(client)
     return JSON.stringify("Пользователь зарегистрирован");
