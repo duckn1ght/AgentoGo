@@ -1,4 +1,4 @@
-import { IsAlpha, IsEmail, IsNotEmpty } from "class-validator"
+import { IsEmail, IsNotEmpty, IsOptional } from "class-validator"
 
 export class SignInDto {
     @IsEmail()
@@ -6,4 +6,13 @@ export class SignInDto {
 
     @IsNotEmpty()
     password:string
+
+    @IsNotEmpty()
+    date:string
+
+    @IsNotEmpty()
+    authPoint: string
+
+    @IsOptional()
+    authManager?: string
 }

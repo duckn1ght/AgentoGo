@@ -3,7 +3,9 @@ import { AuthenticationService } from './authentication.service';
 import { SignInDto } from './dto/sign-in.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/constants';
-import { CreateClientDto } from 'src/users/client/dto/create-client.dto';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -17,8 +19,22 @@ export class AuthenticationController {
   }
   
   @Public()
-  @Post('register/client')
-  signUp(@Body() createClientDto: CreateClientDto) {
-    return this.authenticationService.signUp(createClientDto);
+  @Post('register')
+  signUp(@Body() createUserDto: CreateUserDto) {
+    return this.authenticationService.signUp(createUserDto);
+  }
+
+  @Public()
+  @Post('forgot-password')
+  forgotPassword(@Body() forgotPasswordDto:ForgotPasswordDto) {
+    return this.authenticationService.requestPasswordReset(forgotPasswordDto);
+  }
+
+  @Public()
+  @Patch('reset-password')
+  resetPassword(
+    @Body() resetPasswordDto: ResetPasswordDto
+  ) {
+    return this.authenticationService.resetPassword(resetPasswordDto);
   }
 }

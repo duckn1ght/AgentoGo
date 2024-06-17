@@ -25,3 +25,10 @@ export const requiredPhoneValidationRule = {
         return phoneRegex.test(value) || "Некорректный номер телефона"
     } 
 }
+export const requiredPasswordValidationRule = {
+    ...requiredField,
+    validate: (value:string) => {
+        const passwordRegex = /^[a-zA-Z0-9]+$/;
+        return passwordRegex.test(value) || "Пароль может содержать только буквы и цифры и быть больше 7 символов"
+    } 
+}

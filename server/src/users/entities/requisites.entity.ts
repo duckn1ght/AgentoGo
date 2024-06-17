@@ -1,6 +1,5 @@
-import { Column, Entity, OneToOne} from "typeorm";
+import { Column, Entity} from "typeorm";
 import { AbstractEntity } from "src/abstractions/abstract.entity";
-import { Client } from "./client.entity";
 
 @Entity()
 export class Requisities extends AbstractEntity<Requisities> {

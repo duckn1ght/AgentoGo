@@ -13,7 +13,14 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as RegisterImport } from './routes/register'
 import { Route as LoginImport } from './routes/login'
+import { Route as ForgotPasswordImport } from './routes/forgot-password'
 import { Route as IndexImport } from './routes/index'
+import { Route as ProfileIndexImport } from './routes/profile/index'
+import { Route as ChangePasswordTokenImport } from './routes/change-password.$token'
+import { Route as ProfileEditIndexImport } from './routes/profile/edit/index'
+import { Route as ProfileEditPasswordImport } from './routes/profile/edit/password'
+import { Route as ProfileAddRequisitiesImport } from './routes/profile/add/requisities'
+import { Route as ProfileEditRequisitiesRequisitiesIdImport } from './routes/profile/edit/requisities.$requisitiesId'
 
 // Create/Update Routes
 
@@ -27,10 +34,46 @@ const LoginRoute = LoginImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const ForgotPasswordRoute = ForgotPasswordImport.update({
+  path: '/forgot-password',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
+
+const ProfileIndexRoute = ProfileIndexImport.update({
+  path: '/profile/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ChangePasswordTokenRoute = ChangePasswordTokenImport.update({
+  path: '/change-password/$token',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProfileEditIndexRoute = ProfileEditIndexImport.update({
+  path: '/profile/edit/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProfileEditPasswordRoute = ProfileEditPasswordImport.update({
+  path: '/profile/edit/password',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProfileAddRequisitiesRoute = ProfileAddRequisitiesImport.update({
+  path: '/profile/add/requisities',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProfileEditRequisitiesRequisitiesIdRoute =
+  ProfileEditRequisitiesRequisitiesIdImport.update({
+    path: '/profile/edit/requisities/$requisitiesId',
+    getParentRoute: () => rootRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -38,6 +81,10 @@ declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/forgot-password': {
+      preLoaderRoute: typeof ForgotPasswordImport
       parentRoute: typeof rootRoute
     }
     '/login': {
@@ -48,6 +95,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterImport
       parentRoute: typeof rootRoute
     }
+    '/change-password/$token': {
+      preLoaderRoute: typeof ChangePasswordTokenImport
+      parentRoute: typeof rootRoute
+    }
+    '/profile/': {
+      preLoaderRoute: typeof ProfileIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/profile/add/requisities': {
+      preLoaderRoute: typeof ProfileAddRequisitiesImport
+      parentRoute: typeof rootRoute
+    }
+    '/profile/edit/password': {
+      preLoaderRoute: typeof ProfileEditPasswordImport
+      parentRoute: typeof rootRoute
+    }
+    '/profile/edit/': {
+      preLoaderRoute: typeof ProfileEditIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/profile/edit/requisities/$requisitiesId': {
+      preLoaderRoute: typeof ProfileEditRequisitiesRequisitiesIdImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -55,8 +126,15 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
+  ForgotPasswordRoute,
   LoginRoute,
   RegisterRoute,
+  ChangePasswordTokenRoute,
+  ProfileIndexRoute,
+  ProfileAddRequisitiesRoute,
+  ProfileEditPasswordRoute,
+  ProfileEditIndexRoute,
+  ProfileEditRequisitiesRequisitiesIdRoute,
 ])
 
 /* prettier-ignore-end */

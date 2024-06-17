@@ -1,14 +1,15 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Client } from './entities/client.entity';
+import { User } from './entities/user.entity';
 import { Address } from './entities/address.entity';
 import { Organization } from './entities/organization.entity';
 import { Requisities } from './entities/requisites.entity';
+import { AuthHistory } from './entities/auth-history.entity';
 
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Client, Address, Organization, Requisities])],
+  imports: [TypeOrmModule.forFeature([User, Address, Organization, Requisities, AuthHistory])],
   controllers: [],
   providers: []
 })
-export class ClientsModule {}
+export class UsersModule {}

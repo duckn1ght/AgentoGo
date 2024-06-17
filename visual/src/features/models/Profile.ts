@@ -1,6 +1,7 @@
-import { AddressDto, OrganizationDto } from "../../pages/auth/Register";
+import { AddressDto, OrganizationDto, POSITION, ROLE_TYPE } from "../../pages/auth/Register"
 
 type RequisitiesData = {
+    id:string,
     bankName: string,
     identityCode:string,
     bankCode:string,
@@ -17,5 +18,8 @@ export interface Profile{
         id:string
     }
     phoneNumber:string,
-    requisities?: RequisitiesData | null
+    requisities?: RequisitiesData | null,
+    passwordChangeDate: string,
+    role: ROLE_TYPE,
+    position: POSITION
 }

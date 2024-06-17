@@ -1,12 +1,14 @@
 import { FC } from "react"
-import { AuthForm } from "./ui/AuthForm"
+import { AuthForm } from "./ui/DefaultForm"
 import { Controller, useForm } from "react-hook-form"
-import { TextField } from "@mui/material"
+import { TextField} from "@mui/material"
 import { Button } from "../../shared/ui/Button"
 import { requiredEmailValidationRule, requiredValidateMinLength } from "../../components/input-validate"
-import { useNavigate } from "@tanstack/react-router"
+import { Link, useNavigate } from "@tanstack/react-router"
 import { apiService } from "../../services/api/ApiService"
 import { useAuth } from "../../features/auth"
+import { Typography } from "../../shared/ui/Typography"
+import { COLORS_TEXT } from "../../shared/ui/colors"
 
 interface FormType{
     email:string,
@@ -20,7 +22,7 @@ export const Login:FC = function Login(){
     const {
         handleSubmit,
         control,
-        formState:{isValid}
+        formState:{isValid, isSubmitting}
     } = useForm<FormType>({
         defaultValues:{
             email:"",
@@ -29,9 +31,15 @@ export const Login:FC = function Login(){
         mode:"onChange"
     })
     return <AuthForm onSubmit={handleSubmit( async(form) => {
+        const ip = await fetch("http://ipwho.is/").then((response) => response.json()).then((data) => data)
         const response = await apiService.post<string>({
             url:"/auth/login",
-            dto:form
+            dto:{
+                ...form,
+                date: new Date().toISOString(),
+                authPoint: ip.city,
+                authManager: ""
+            }
         }).catch((response) =>{
             if (response.status === 401){
                 throw alert("Неверный логин или пароль")
@@ -75,8 +83,13 @@ export const Login:FC = function Login(){
                 />
             )}
         />
-        <Button disabled={!isValid} type="submit">
+        <Button disabled={!isValid || isSubmitting} type="submit">
             {"Войти"}
         </Button>
+        <div className="mt-2">
+            <Link to="/forgot-password">
+                <Typography align="center" className={`${COLORS_TEXT.main400}`}>Забыли пароль?</Typography>
+            </Link>
+        </div>
     </AuthForm>
 }

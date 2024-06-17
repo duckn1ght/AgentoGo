@@ -1,19 +1,23 @@
-import { Column, Entity, JoinColumn, OneToOne } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, OneToMany, OneToOne } from "typeorm";
 import { AbstractEntity } from "src/abstractions/abstract.entity";
 import { Address } from "./address.entity";
 import { Organization } from "./organization.entity";
 import { Requisities } from "./requisites.entity";
 import { IsNotEmpty } from "class-validator";
-import { ROLE_TYPE } from "../types/role";
+import { POSITION, ROLE_TYPE } from "../types/user-types";
+import { AuthHistory } from "./auth-history.entity";
 
 @Entity()
-export class Client extends AbstractEntity<Client> {
+export class User extends AbstractEntity<User> {
 
     @Column({unique: true})
     email:string
 
     @Column()
     password:string
+
+    @Column()
+    passwordChangeDate: string
 
     @OneToOne(() => Address, {cascade: true})
     @JoinColumn()
@@ -33,6 +37,13 @@ export class Client extends AbstractEntity<Client> {
     @JoinColumn()
     requisities: Requisities
 
-    @IsNotEmpty()
+    @Column()
     role: ROLE_TYPE
+    
+    @Column()
+    poisiton: POSITION
+
+    @OneToMany(() => AuthHistory, (authHistories) => authHistories.user, {cascade: true})
+    @JoinTable()
+    authHistories: AuthHistory[]
 }

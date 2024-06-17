@@ -1,7 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Address } from "src/users/client/entities/address.entity";
-import { Organization } from "src/users/client/entities/organization.entity";
-import { Requisities } from "src/users/client/entities/requisites.entity";
+import { Address } from "src/users/entities/address.entity";
+import { AuthHistory } from "src/users/entities/auth-history.entity";
+import { Organization } from "src/users/entities/organization.entity";
+import { Requisities } from "src/users/entities/requisites.entity";
+import { ORGANIZATION_TYPE } from "src/users/types/user-types";
 
 export class GetMyProfileResponse{
     @ApiProperty({example:"Петров Петр Петрович"})
@@ -15,13 +17,17 @@ export class GetMyProfileResponse{
 
     @ApiProperty({example:{
         id:"8883219321hfdsjh-123fhd",
-        orgType: "ИП",
-        identityNumber: "0203020102"
+        type: "ИП",
+        identityNumber: "0203020102",
+        name: "Название организации",
+        imgUrl: "Название картинки"
     }})
     organization: Organization = {
         id:"",
-        orgType: "ТОО",
-        identityNumber: ""
+        type: ORGANIZATION_TYPE.TOO,
+        identityNumber: "",
+        name: "",
+        imgUrl: ""
     }
 
     @ApiProperty({example: {
@@ -51,4 +57,20 @@ export class GetMyProfileResponse{
         bankCode: "",
         benCode: ""
     }
+    @ApiProperty({example: [
+    {
+        id: "gdhsk321-321fxs-321dsa",
+        authDate: "20240611T000000+0600",
+        authPoint: "ул.Камзина",
+        authManager: "Петров Петр Иванович",
+    },
+    {
+        id: "gdhsk321-321fxs-321dsa",
+        authDate: "20240523T000000+0600",
+        authPoint: "ул.Камзина",
+        authManager: "Петров Петр Иванович",
+    }
+]
+})
+    authHistories: AuthHistory[] = []
 }

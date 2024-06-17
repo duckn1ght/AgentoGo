@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { useAuth } from "../features/auth";
 import { Link, RouterState, useRouterState } from "@tanstack/react-router";
-import { AUTH_PATH } from "../routes/__root";
+import { AUTH_PATH, RESET_PATH } from "../routes/__root";
 import HomeIcon from "@mui/icons-material/Home";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
@@ -39,7 +39,8 @@ export const FooterMenu: FC = function FooterMenu() {
   const routes: RouterState = useRouterState();
   const [activeIndex, setActiveIndex] = useState<number>(1)
 
-  return !isAuthenticated && AUTH_PATH.includes(routes.location.pathname) ? (
+  return !isAuthenticated && (AUTH_PATH.includes(routes.location.pathname) 
+  || routes.location.pathname.includes(RESET_PATH)) ? (
     <Footer className="none" />
   ) : (
     <Footer>

@@ -1,54 +1,49 @@
-import { TextField, Typography, Select, MenuItem, Button } from '@mui/material';
-import { useNavigate } from '@tanstack/react-router';
+import { TextField } from '@mui/material';
+import { useRouter } from '@tanstack/react-router';
 import  { FC } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { requiredEmailValidationRule, requiredValidateMinLength, requiredPhoneValidationRule, requiredField } from '../../../components/input-validate';
 import { apiService } from '../../../services/api/ApiService';
-import { AuthForm } from './AuthForm';
-
-const organizationTypes = ["ИП", "ТОО"]
+import { AuthForm } from '../../auth/ui/DefaultForm';
+import { useAuth } from '../../../features/auth';
+import { Button } from '../../../shared/ui/Button';
+import { Profile } from '../../../features/models/Profile';
 
 export interface AddressDto{
     region:string,
-    city:string,
     street:string
 }
 
 export interface OrganizationDto{
-    orgType: string,
     identityNumber : string
 }
 
 interface FormType{
     email: string,
-    password: string,
     address: AddressDto
     fullName: string,
     phoneNumber: string,
     organization: OrganizationDto
 }
 
-export const ClientRegister: FC = function ClientRegister() {
-    const navigate = useNavigate()
-
+export const EditProfile: FC = function EditProfile() {
+    const {history} = useRouter()
+    const {user, setUser} = useAuth() 
     const {
         handleSubmit,
         control,
-        formState:{isValid}
+        formState:{isValid, isSubmitting}
     } = useForm<FormType>({
         defaultValues:{
-            email: "",
-            password: "",
+            email: user?.email || "",
             address: {
-                region:"",
-                city:"",
-                street:""
+                region: user?.address.region || "",
+                street: user?.address.street || ""
             },
-            fullName: "",
-            phoneNumber: "",
+            fullName: user?.fullName || "",
+            phoneNumber: user?.phoneNumber || "",
             organization: {
-                orgType:"",
-                identityNumber:""
+                identityNumber: user?.organization.identityNumber || ""
             }
         },
         mode:"onChange"
@@ -56,14 +51,16 @@ export const ClientRegister: FC = function ClientRegister() {
 
 
     return <AuthForm onSubmit={handleSubmit(async (form )=>{
-        const response = await apiService.post<string>({
-            url:"/auth/register/client",
+        await apiService.patch<string>({
+            url:"/profile",
             dto:{...form}
-        })
-
-        if(response.data){
-            navigate({to:"/login"})
-        }
+        }).then(async () =>{
+            const response = await apiService.get<Profile>({
+                url: "/profile",
+            });
+            setUser(response.data);
+            history.back()
+        }) 
     })}>
         <Controller 
             name="email"
@@ -81,22 +78,6 @@ export const ClientRegister: FC = function ClientRegister() {
             )}
         />
         <Controller 
-            name="password"
-            control={control}
-            rules={requiredValidateMinLength(6)}
-            render={( {field, fieldState: {error} }) =>(
-                <TextField 
-                    {...field}
-                    error={Boolean(error?.message)}
-                    helperText= {error?.message}
-                    label={"Пароль"}
-                    fullWidth={true}
-                    variant="standard"
-                    type="password"
-                />
-            )}
-        />
-        <Controller 
             name="address.region"
             control={control}
             rules={requiredValidateMinLength(2)}
@@ -106,21 +87,6 @@ export const ClientRegister: FC = function ClientRegister() {
                     error={Boolean(error?.message)}
                     helperText= {error?.message}
                     label={"Регион"}
-                    fullWidth={true}
-                    variant="standard"
-                />
-            )}
-        />
-        <Controller 
-            name="address.city"
-            control={control}
-            rules={requiredValidateMinLength(2)}
-            render={( {field, fieldState: {error} }) =>(
-                <TextField 
-                    {...field}
-                    error={Boolean(error?.message)}
-                    helperText= {error?.message}
-                    label={"Город"}
                     fullWidth={true}
                     variant="standard"
                 />
@@ -170,24 +136,6 @@ export const ClientRegister: FC = function ClientRegister() {
                 />   
             )}
         />
-        <Typography>Информация об организации</Typography>
-        <Controller 
-            name="organization.orgType"
-            control={control}
-            rules={requiredField}
-            render={( {field: {value, onChange} }) =>(
-                <Select
-                    value={value}
-                    onChange={onChange}
-                >
-                    {organizationTypes.map((item) => (
-                        <MenuItem key={item} value={item}>
-                            {item}
-                        </MenuItem>
-                    ))}
-                </Select>
-            )}
-        />
         <Controller 
             name="organization.identityNumber"
             control={control}
@@ -203,9 +151,15 @@ export const ClientRegister: FC = function ClientRegister() {
                 />   
             )}
         />
-        
-        <Button disabled={!isValid} type="submit">
-            {"Зарегистрироваться"}
-        </Button>
+        <div className="flex justify-content items-center gap-2">
+            <Button mode='dark' 
+                onClick={() => history.back()}
+            >
+                {"Отменить"}
+            </Button>
+            <Button disabled={!isValid || isSubmitting} type="submit">
+                {"Сохранить"}
+            </Button>
+        </div>
     </AuthForm>
 };

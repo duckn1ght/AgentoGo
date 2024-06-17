@@ -1,8 +1,9 @@
-import { IsAlpha, IsEmail, IsMobilePhone, IsNotEmpty, IsPhoneNumber } from "class-validator";
+import { IsEmail, IsMobilePhone, IsNotEmpty, IsString } from "class-validator";
 import { Address } from "../entities/address.entity";
 import { Organization } from "../entities/organization.entity";
+import { ROLE_TYPE } from "../types/user-types";
 
-export class CreateClientDto {
+export class CreateUserDto {
     @IsEmail()
     email:string;
 
@@ -20,4 +21,10 @@ export class CreateClientDto {
 
     @IsNotEmpty()
     organization: Organization
+
+    @IsNotEmpty()
+    role: ROLE_TYPE
+
+    @IsString()
+    passwordChangeDate: string
 }

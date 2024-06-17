@@ -1,6 +1,4 @@
 import { createRootRouteWithContext, Outlet, redirect } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-
 import { RootRouteContext } from "../types/tanstack";
 import { HeaderMenu } from "../components/HeaderMenu";
 import { tokenService } from "../services/storage/Factory";
@@ -8,7 +6,8 @@ import { useAuth } from "../features/auth";
 import { InitPage } from "../pages/init/InitPage";
 import { FooterMenu } from "../components/FooterMenu";
 
-export const AUTH_PATH = ["/login","/register"]
+export const AUTH_PATH = ["/login","/register","/forgot-password"]
+export const RESET_PATH = "/change-password"
 
 export const Route = createRootRouteWithContext<RootRouteContext>()({
     component: () => {
@@ -26,15 +25,15 @@ export const Route = createRootRouteWithContext<RootRouteContext>()({
                 <Outlet />
             </div>
             <FooterMenu/>
-            {/* <TanStackRouterDevtools/> */}
         </div>
         </>
         )
     },
     beforeLoad: (options) =>{
-        
+        console.log(RESET_PATH)
         if(
-            !AUTH_PATH.includes(options.location.pathname) &&
+            !AUTH_PATH.includes(options.location.pathname) && 
+            !options.location.pathname.includes(RESET_PATH) &&
             !tokenService.hasValue()
         ){
             throw redirect({to:"/login"})
@@ -42,6 +41,6 @@ export const Route = createRootRouteWithContext<RootRouteContext>()({
         else if(AUTH_PATH.includes(options.location.pathname) &&
             tokenService.hasValue()){
                 throw redirect({to:"/"})
-            }
+        }
     }
 });
