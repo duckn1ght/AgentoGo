@@ -30,7 +30,6 @@ export const Route = createRootRouteWithContext<RootRouteContext>()({
         )
     },
     beforeLoad: (options) =>{
-        console.log(RESET_PATH)
         if(
             !AUTH_PATH.includes(options.location.pathname) && 
             !options.location.pathname.includes(RESET_PATH) &&
